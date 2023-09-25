@@ -1,4 +1,4 @@
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +10,500 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+} */
+
+@media (max-width: 740px) {
+	.cs-main-container--responsive>.cs-sidebar.cs-sidebar--left.left-bar {
+		display: none;
+	}
+
+	.cs-main-container--responsive .cs-chat-container .cs-conversation-header .cs-conversation-header__back {
+		display: flex!important;
+	}
+
+	.cs-main-container--responsive>.cs-sidebar.cs-sidebar--left.left-bar.visible {
+		display: flex;
+		flex-basis: auto;
+		width: 100%;
+		min-width: 100%;
+	}
+
+	.cs-main-container--responsive .cs-chat-container.chat-container-index {
+		display: none;
+	}
 }
+
+@media (max-width: 768px) {
+	.cs-main-container--responsive>.cs-sidebar.cs-sidebar--left.left-bar {
+		flex-basis: auto;
+	}
+
+	.cs-main-container--responsive .cs-conversation-list .cs-conversation__content, .cs-main-container--responsive .cs-sidebar.left-bar .cs-conversation-list .cs-conversation__content {
+		display: flex;
+	}
+
+	.cs-main-container--responsive .cs-search {
+		display: flex!important;
+	}
+}
+
+.user-button.cs-button {
+	border-radius: 50%;
+	padding: 0.3em 0.4em;
+	margin: 0 0.8em 0 0;
+	border: none!important;
+	transition: background-color 0.3s;
+}
+
+.user-button.cs-button:hover:not(:disabled) {
+	opacity: inherit;
+	background-color: #e7f0f7;
+}
+
+.cs-main-container>.cs-sidebar.cs-sidebar--left .cs-search.header-search {
+	margin: 0;
+}
+
+.cs-message__avatar {
+	width: 42px;
+	height: 42px;
+}
+
+.left-bar__avatar {
+	width: 42px;
+	height: 42px;
+	margin-right: 0.5em;
+}
+
+.cs-conversation-header.cs-conversation-header {
+	align-items: center;
+}
+
+.chat-message-list .chat-list-avatar {
+	min-width: 42px;
+}
+
+.chat-message-list {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+.chat-message-list .scrollbar-container {
+	height: auto;
+}
+
+.bm-btn {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+}
+
+.icon-close {
+	font-family: "icomoon" !important;
+	font-style: normal;
+	font-weight: normal;
+	font-feature-settings: normal;
+	font-variant: normal;
+	text-transform: none;
+	font-size: 2rem;
+}
+
+.icon-close:before {
+	content: "×";
+}
+
+.selected-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 0.5rem 0.8rem 0rem 0.3rem;
+}
+
+.selected-item {
+	display: flex;
+	flex-direction: row;
+	background-color: #C6E3FA;
+	padding: 0 1rem 0 0;
+	border-radius: 16px;
+	margin: 0em 0em 0.5em 0.5em;
+	align-items: center;
+	cursor: pointer;
+	position: relative;
+	transition: background-color .15s ease;
+}
+
+.selected-item:hover {
+	background-color: #fac6c6;
+}
+
+.selected-container .cs-avatar.cs-avatar--sm {
+	width: 2rem;
+	height: 2rem;
+	min-width: 2rem;
+	min-height: 2rem;
+}
+
+.selected-item-name {
+	padding-left: 0.5rem;
+}
+
+.selected-item-remove {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #e15956;
+	color: #fff;
+	opacity: 0;
+	transition: opacity .15s ease;
+	overflow: hidden;
+}
+
+.selected-item:hover .selected-item-remove {
+	opacity: 1;
+}
+
+.left-bar-form-check.form-check {
+	display: flex;
+	align-items: center;
+}
+
+.left-bar-form-check label {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	align-items: center;
+	padding-left: 2.2em;
+	margin-left: -1.2em;
+}
+
+.left-bar-form-check .form-check-input:focus {
+	border-color: #dee2e6;
+	outline: 0;
+	box-shadow: none;
+}
+
+.left-bar-form-check .form-check-input:checked {
+	background-color: #6EA9D7;
+	border-color: #6EA9D7;
+}
+
+.left-bar-form-check .form-check-input {
+	width: 1.2em;
+	height: 1.2em;
+}
+
+.left-bar .tab-content>.active {
+	display: flex;
+	flex-direction: column;
+}
+
+.left-bar .tab-pane {
+	height: 100%;
+}
+
+.header-cmn.cs-conversation-header {
+	min-height: 54px;
+	align-items: center;
+	padding: 0.3em 0.8em;
+}
+
+.header-cmn .cs-conversation-header__content {
+	flex-direction: row;
+	justify-content: normal;
+	align-items: center;
+}
+
+.left-separation-headers:first-child {
+	border: none;
+}
+
+.left-separation-headers {
+	padding: 0 0.85em;
+	color: #7494ab;
+	font-size: 0.9em;
+	font-weight: 500;
+	box-sizing: border-box;
+	border-top: 1px solid #dee2e6;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Merriweather', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.left-bar {
+  box-shadow: 2px 0 5px -2px rgb(0 0 0 / 38%);
+}
+
+.account {
+	height: 100vh;
+	width: 100%;
+	min-height: 100vh;
+	display: flex;
+	overflow-y: auto;
+	background: #eee;
+}
+.account.account--photo {
+	background: #6fb9fb;
+}
+.account.account--photo .account__card {
+	background-color: rgba(0, 10, 16, 0.8);
+	color: #fff;
+}
+.account.account--photo .form__form-group-icon, .account.account--photo .form__form-group-button {
+	background: transparent;
+}
+.account.account--photo .form__form-group-icon, .account.account--photo input:not(:last-child) {
+	border-right: none;
+}
+.account.account--photo .form__form-group-button, .account.account--photo input {
+	border-left: none;
+}
+.account.account--photo .form__form-group-button.active {
+	border-color: #eff1f5;
+}
+.account.account--photo .form__form-group-button.active svg {
+	fill: #eee;
+}
+.account.account--photo input {
+	color: #fff;
+}
+.account.account--photo input:focus {
+	border-color: #eff1f5;
+}
+.account.account--photo p {
+	color: #fff;
+}
+.account.account--photo .account__title {
+	color: #fff;
+}
+.account__wrapper {
+	margin: auto;
+	padding: 10px;
+}
+.account__card {
+	background-color: #fff;
+	margin: 30px auto auto auto;
+	padding: 50px 60px;
+	width: 500px;
+}
+.account__profile {
+	text-align: center;
+}
+.account__btns {
+	display: flex;
+	width: calc(100% + 10px);
+	margin: -10px 0 -20px -10px;
+}
+.account__btns a {
+	margin: 10px 0 20px 10px;
+	white-space: nowrap;
+}
+.account__btn {
+	width: 100%;
+	margin-right: 0;
+}
+.account__avatar {
+	height: 64px;
+	width: 64px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.account__name {
+	font-size: 11px;
+	text-transform: uppercase;
+	font-weight: 700;
+	line-height: 15px;
+	margin: 5px 0 5px 0px;
+}
+.account__sub {
+	margin-top: 0;
+	margin-bottom: 10px;
+	color: #656262;
+	font-size: 11px;
+	line-height: 15px;
+}
+.account__forgot-password {
+	position: absolute;
+	font-size: 11px;
+	line-height: 15px;
+	bottom: -18px;
+	right: 0;
+}
+.account__forgot-password a {
+	color: #70bbfd;
+}
+.account__forgot-password a:hover {
+	color: #3ea3fc;
+	text-decoration: none;
+}
+.form__form-group--forgot {
+	margin-bottom: 40px;
+}
+.account__or {
+	text-align: center;
+	margin-top: 35px;
+	margin-bottom: 20px;
+	position: relative;
+}
+.account__or:before, .account__or:after {
+	content: "";
+	height: 1px;
+	width: calc(50% - 90px);
+	background: #ddd;
+	position: absolute;
+	top: 10px;
+}
+.account__or:before {
+	left: 0;
+}
+.account__or:after {
+	right: 0;
+}
+.account__social {
+	text-align: center;
+}
+.account__social-btn {
+	display: inline-block;
+	height: 38px;
+	width: 38px;
+	border-radius: 5px;
+	padding: 9px;
+	margin-right: 10px;
+	transition: all 0.3s;
+	border: none;
+}
+.account__social-btn:last-child {
+	margin-right: 0;
+}
+.account__social-btn svg {
+	fill: #fff;
+	height: 20px;
+	width: 20px;
+}
+.account__social-btn.account__social-btn--facebook {
+	background: #4766a4;
+}
+.account__social-btn.account__social-btn--facebook:hover {
+	background: #385080;
+}
+.account__social-btn.account__social-btn--google {
+	background: #c74d4d;
+}
+.account__social-btn.account__social-btn--google:hover {
+	background: #ab3636;
+}
+.account__head {
+	margin-bottom: 30px;
+	padding-left: 10px;
+	border-left: 4px solid #70bbfd;
+}
+.account__logo {
+	font-weight: 700;
+}
+.account__logo-accent {
+	color: #70bbfd;
+}
+.account__have-account {
+	text-align: center;
+	margin-top: 20px;
+}
+.account__have-account a {
+	color: #70bbfd;
+	transition: all 0.3s;
+}
+.account__have-account a:hover {
+	color: #3ea3fc;
+	text-decoration: none;
+}
+@media screen and (max-width: 520px) {
+	.account__card {
+		padding: 35px 30px;
+}
+}
+@media screen and (max-width: 425px) {
+	.account__btns {
+		flex-wrap: wrap;
+}
+}
+
+.form-control {
+  margin: 10px 0px;
+}
+
+.header-editor {
+  background: #fff;
+  outline: none;
+  padding: 20px;
+  border: 1px solid #b3b3b1;
+}
+
+.body-editor {
+  outline: none;
+  background: #fff;
+  height: 100vh;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.currentusers {
+  margin: 20px 0;
+  display: flex;
+}
+
+.navbar-brand {
+  font-size: 16px;
+}
+
+.userInfo {
+  width: 40px;
+  height: 40px;
+  display: -webkit-flex;
+  display: flex;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #FFF;
+}
+
+.container-fluid {
+  padding: 0px;
+}
+
+.main-content {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 15px 50px;
+  background: #eee;
+}
+
+.document-holder {
+  flex: 1;
+}
+
+.rooms-list-holder {
+  width: 300px;
+  background: #FFF;
+  min-width: 300px;
+  margin: 80px 0px 90px 15px;
+  height: 100vh;
+  border: 1px solid #ccc;
+}
+
+.rooms-list-holder ul {
+  padding: 9px;
+  list-style: none;
+  font-size: 12px;
+  color: #4e4e4e;
+}
+
