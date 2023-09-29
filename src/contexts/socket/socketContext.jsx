@@ -3,9 +3,12 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 import { useAuthContext } from "../auth/authContext"; 
 
-const WS_URL = 'ws://127.0.0.1:8001';
+// const WS_URL = 'wss://admitted-busy-doom.glitch.me';
+const WS_URL = process.env.REACT_APP_WS_URL;
 
 const SocketContext = createContext();
+
+console.log(process.env)
 
 export function SocketProvider({children}) {
 

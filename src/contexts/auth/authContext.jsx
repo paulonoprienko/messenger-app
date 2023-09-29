@@ -28,9 +28,10 @@ export const AuthProvider = ({children}) => {
     }
   }, [user]);
 
-
+  
   const logInUser = async (username, password) => {
-    let response = await fetch('http://localhost:8000/api/user/login', {
+    // let response = await fetch('https://admitted-busy-doom.glitch.me/api/user/login', {
+    let response = await fetch(process.env.REACT_APP_LOGIN, {
       method: 'post',
       body: JSON.stringify({
         username,
@@ -56,7 +57,8 @@ export const AuthProvider = ({children}) => {
   }
 
   const register = async (username, password) => {
-    let response = await fetch('http://localhost:8000/api/user/register', {
+    // let response = await fetch('https://admitted-busy-doom.glitch.me/api/user/register', {
+    let response = await fetch(process.env.REACT_APP_REGISTER, {
       method: 'post',
       body: JSON.stringify({
         username,
