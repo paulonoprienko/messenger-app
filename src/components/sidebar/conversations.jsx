@@ -13,18 +13,11 @@ import SidebarAvatar from './avatar';
 import { useSidebarContext } from '../../contexts/sidebar/sidebarContext';
 
 const Conversations = () => {
-  const { handleConversationClick, conversationAvatarStyle, isConnect } = useMessengerContext();
+  // const { handleConversationClick, conversationAvatarStyle, isConnect } = useMessengerContext();
 
   const {user} = useAuthContext();
   const {chats, selectedChat} = useMessengerContext();
   const { openChat } = useSidebarContext();
-
-  // useEffect(() => {
-  //   console.log(createdChat)
-  //   if(createdChat) {
-  //     openChat(createdChat);
-  //   }
-  // }, [isConnect]);
 
   return (
     <ConversationList scrollable={true}>

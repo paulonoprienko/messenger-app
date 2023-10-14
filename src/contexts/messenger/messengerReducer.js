@@ -95,7 +95,6 @@ const addGroupChat = (data, state) => {
 const MessengerReducer = (state, action) => {
 	switch(action.type) {
 		case CONNECT_AUTH:
-			// console.log(action.payload);
 			return getInitialData(action.payload.data, state, action.currentUser);
 
 		case SENDING_MESSAGE:

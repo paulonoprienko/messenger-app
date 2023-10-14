@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Sidebar,
-  AddUserButton as CreateNewGroupButton,
   Search,
   Button,
   ConversationHeader,

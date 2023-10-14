@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowButton, Avatar, Button, ConversationHeader, Search } from '@chatscope/chat-ui-kit-react';
+import { ArrowButton, Button, ConversationHeader, Search } from '@chatscope/chat-ui-kit-react';
 import {
 	MAIN_KEY,
 	STEP_2,
 } from "../../contexts/sidebar/leftBarKeys";
 
-import emilyIco from "../../icons/emily.d34aecd9.svg";
 import PickerList from './pickerList';
 import { useSidebarContext } from '../../contexts/sidebar/sidebarContext';
 import SidebarAvatar from './avatar';
@@ -55,7 +54,6 @@ const Step1 = () => {
 							handleCheckboxChange(selectedContact);
 						}}
 					>
-						{/* <Avatar src={ emilyIco } name={"Emily"} size="sm" /> */}
 						<SidebarAvatar name={selectedContact.username} src={selectedContact.avatarImageBase64} size="2rem" className="" />
 						<div className="selected-item-name">
 							{selectedContact.username}
