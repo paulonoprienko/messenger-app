@@ -1,9 +1,12 @@
-import React, { createContext, useMemo, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import {
   CONVERSATIONS_KEY,
   MAIN_KEY,
   STEP_1
 } from "./leftBarKeys";
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from "../auth/authContext";
+import { useMessengerContext } from "../messenger/messengerContext";
 
 const SidebarContext = createContext();
 
@@ -12,6 +15,33 @@ export const SidebarProvider = ({children}) => {
   const [activeMainKey, setActiveMainKey] = useState(CONVERSATIONS_KEY);
   const [activeNewGroupKey, setActiveNewGroupKey] = useState(STEP_1);
   const [selectedContacts, setSelectedContacts] = useState([]);
+
+  const { user } = useAuthContext();
+  const { createdChat, handleConversationClick } = useMessengerContext();
+
+  const navigate = useNavigate();
+  const openChat = (chat) => {
+    if(chat.type === 'direct') {
+      const interlocutor = chat.recipients.find(recipient => recipient.id !== user.id);
+      navigate(`/${interlocutor.id}`);
+    }
+    else if (chat.type === 'group') {
+      navigate(`/-${chat.id}`);
+    }
+    else if(chat.type === 'userdirect') {
+      navigate(`/${chat.id}`);
+    }
+    handleConversationClick();
+  }
+
+  useEffect(() => {
+    if(createdChat) {
+      openChat(createdChat);
+      setSelectedContacts([]);
+			setActiveNewGroupKey(STEP_1);
+			setActiveSidebarKey(MAIN_KEY);
+    }
+  }, [createdChat]);
 
   const v = useMemo(() => ({
 		activeSidebarKey,
@@ -22,6 +52,8 @@ export const SidebarProvider = ({children}) => {
     setActiveNewGroupKey,
     selectedContacts,
     setSelectedContacts,
+
+    openChat,
 	}), [
     activeSidebarKey,
     activeMainKey,
@@ -31,6 +63,8 @@ export const SidebarProvider = ({children}) => {
     setActiveNewGroupKey,
     selectedContacts,
     setSelectedContacts,
+
+    openChat,
   ]);
 
   return (

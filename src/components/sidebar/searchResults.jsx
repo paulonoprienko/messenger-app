@@ -2,26 +2,27 @@ import React from 'react';
 import {
   Conversation,
 } from "@chatscope/chat-ui-kit-react";
-import { useNavigate } from 'react-router-dom';
 import { useMessengerContext } from '../../contexts/messenger/messengerContext';
 import SidebarAvatar from './avatar';
+import { useSidebarContext } from '../../contexts/sidebar/sidebarContext';
 
 const SearchResults = ({setSearchInputValue}) => {
 
-  const {searchResults, selectUser, setSelectedChat, handleConversationClick} = useMessengerContext();
-  const navigate = useNavigate();
+  const { searchResults, selectUser, setSelectedChat, handleConversationClick } = useMessengerContext();
+  const { openChat } = useSidebarContext();
 
   return (
     <>
       {(!!searchResults.users.length) && <div className="left-separation-headers">users:</div>}
       {searchResults.users.map(user => {
+        user.type = "userdirect";
         return (
           <Conversation
             key={`user-${user.id}`}
             onClick={(event) => {
               handleConversationClick();
               selectUser(user);
-              navigate(`/${user.id}`);
+              openChat(user);
               setSearchInputValue('');
             }}
             name={user.username}
@@ -37,10 +38,9 @@ const SearchResults = ({setSearchInputValue}) => {
           <Conversation
             key={`chat-${group.id}`}
             onClick={(event) => {
-              handleConversationClick();
               setSelectedChat(group);
               selectUser(null);
-              navigate(`/-${group.id}`);
+              openChat(group);
               setSearchInputValue('');
             }}
             name={group.name}

@@ -5,6 +5,7 @@ import {
   Search,
   Button,
   ConversationHeader,
+  Loader,
 } from "@chatscope/chat-ui-kit-react";
 import { useMessengerContext } from '../../contexts/messenger/messengerContext';
 import { Tab } from 'react-bootstrap';
@@ -26,7 +27,7 @@ import { faUserEdit, faUsers, faArrowLeft } from "@fortawesome/free-solid-svg-ic
 import UserEdit from './userEdit';
 
 const LeftSideBar = () => {
-  const { search, sidebarClassName } = useMessengerContext();
+  const { search, sidebarClassName, isConnect } = useMessengerContext();
   const { activeSidebarKey, setActiveSidebarKey, activeMainKey, setActiveMainKey } = useSidebarContext();
 
   const [searchInputValue, setSearchInputValue] = useState('');
@@ -48,7 +49,6 @@ const LeftSideBar = () => {
   }, [searchInputValue]);
 
   const handleUserEditClick = () => {
-    console.log(123)
     setActiveSidebarKey(USER_EDIT_KEY);
   }
 
@@ -64,13 +64,17 @@ const LeftSideBar = () => {
             <Tab.Container activeKey={activeMainKey}>
               <ConversationHeader className=" header-cmn">
                 <ConversationHeader.Content>
-
-                  <Button
-                    className="user-button"
-                    border
-                    icon={<FontAwesomeIcon icon={headerButtonIcon} />}
-                    onClick={headerButtonClickHandler}
-                  />
+                  {isConnect
+                    ? <Button
+                      className="user-button"
+                      border
+                      icon={<FontAwesomeIcon icon={headerButtonIcon} />}
+                      onClick={headerButtonClickHandler}
+                    />
+                    : <div className="loader-header">
+                      <Loader />
+                    </div>
+                }
                   <Search
                     placeholder="Search..."
                     value={searchInputValue}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowButton, Button, ConversationHeader } from '@chatscope/chat-ui-kit-react';
+import { Button, ConversationHeader, Loader } from '@chatscope/chat-ui-kit-react';
 import {
 	MAIN_KEY,
 	STEP_1,
@@ -8,19 +8,24 @@ import { useMessengerContext } from '../../contexts/messenger/messengerContext';
 import { Form } from 'react-bootstrap';
 import { useSidebarContext } from '../../contexts/sidebar/sidebarContext';
 import ImageUpload from '../imageUpload';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Step2 = () => {
-	const { setActiveSidebarKey, setActiveNewGroupKey, selectedContacts } = useSidebarContext();
+	const { setActiveNewGroupKey, selectedContacts } = useSidebarContext();
 	const { createNewGroup } = useMessengerContext();
 	const [ newGroupName, setNewGroupName ] = useState('');
 	const [ avatarImageBase64, setAvatarImageBase64 ] = useState(null);
+	const [ isPending, setIsPending ] = useState(false);
 
 	return (
 		<>
 			<ConversationHeader className=" header-cmn">
 				<ConversationHeader.Content>
-					<ArrowButton
-						direction="left"
+					<Button
+						className="user-button"
+						border
+						icon={<FontAwesomeIcon icon={faArrowLeft} />}
 						onClick={() => {
 							setActiveNewGroupKey(STEP_1);
 						}}
@@ -28,15 +33,6 @@ const Step2 = () => {
 					<span>New group</span>
 				</ConversationHeader.Content>
 			</ConversationHeader>
-			{/* <div>
-				<ArrowButton
-					direction="left"
-					onClick={() => {
-						setActiveNewGroupKey(STEP_1);
-					}}
-				/>
-				<span>New group</span>
-			</div> */}
 			<ImageUpload setImage={setAvatarImageBase64} />
 			<Form.Control
 				type="text"
@@ -45,16 +41,21 @@ const Step2 = () => {
 				onChange={e => setNewGroupName(e.target.value)}
 			/>
 			<div className="bm-btn">
-				<Button
-					border
-					direction="right"
-					labelPosition="left"
-					disabled={ !newGroupName.trim() }
-					onClick={() => {
-						createNewGroup(selectedContacts, avatarImageBase64, newGroupName);
-						setActiveSidebarKey(MAIN_KEY);
-					}}
-				>Create group</Button>
+				{!isPending
+					 ? <Button
+						border
+						direction="right"
+						labelPosition="left"
+						disabled={ !newGroupName.trim() }
+						onClick={() => {
+							createNewGroup(selectedContacts, avatarImageBase64, newGroupName);
+							setIsPending(true);
+						}}
+					>
+						Create group
+					</Button>
+					: <Loader />}
+				
 			</div>
 		</>
 	);

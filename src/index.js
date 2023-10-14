@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-	createBrowserRouter,
+	// createBrowserRouter,
+	createHashRouter,
 	RouterProvider,
 } from 'react-router-dom';
 import './index.css';
@@ -16,7 +17,7 @@ import { MessengerProvider } from './contexts/messenger/messengerContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Register from './routes/register';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
 	{
 		path: "/",
 		element: <Root />,

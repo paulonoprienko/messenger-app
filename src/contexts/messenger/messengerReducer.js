@@ -5,6 +5,7 @@ import {
 	CREATING_CHAT_WITH_MESSAGE,
 	JOINING_GROUP,
 	CREATING_GROUP,
+	// AFTER_CREATING_GROUP,
 	EDITING_USER,
 
 } from "../eventsTypes";
@@ -23,6 +24,7 @@ const getInitialData = (data, state, currentUser) => {
 	return {
 		...state,
 		chats,
+		isConnect: true,
 	};
 }
 
@@ -82,7 +84,7 @@ const addGroupChat = (data, state) => {
 			data.chat
 		];
 	}
-
+	
 	return {
 		...state,
 		chats,
@@ -119,6 +121,12 @@ const MessengerReducer = (state, action) => {
 
 		case CREATING_GROUP:
 			return addGroupChat(action.payload.data, state);
+
+		case "afterCreatingGroup":
+			return {
+				...state,
+				createdChat: action.payload.data.chat
+			}
 
 		case EDITING_USER:
 			return state;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+// import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   MainContainer,
 } from "@chatscope/chat-ui-kit-react";

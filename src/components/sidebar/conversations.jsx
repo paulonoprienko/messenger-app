@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ConversationList,
   Conversation,
@@ -10,22 +10,21 @@ import { useAuthContext } from '../../contexts/auth/authContext';
 import groupIco from "../../icons/group.svg";
 import emilyIco from "../../icons/emily.d34aecd9.svg";
 import SidebarAvatar from './avatar';
+import { useSidebarContext } from '../../contexts/sidebar/sidebarContext';
 
 const Conversations = () => {
-  const { handleConversationClick, conversationAvatarStyle } = useMessengerContext();
+  const { handleConversationClick, conversationAvatarStyle, isConnect } = useMessengerContext();
 
   const {user} = useAuthContext();
   const {chats, selectedChat} = useMessengerContext();
-  const navigate = useNavigate();
-  const openChat = (event, chat) => {    
-    if(chat.type === 'direct') {
-      const interlocutor = chat.recipients.find(recipient => recipient.id !== user.id);
-      navigate(`/${interlocutor.id}`);
-    }
-    else if (chat.type === 'group') {
-      navigate(`/-${chat.id}`);
-    }
-  }
+  const { openChat } = useSidebarContext();
+
+  // useEffect(() => {
+  //   console.log(createdChat)
+  //   if(createdChat) {
+  //     openChat(createdChat);
+  //   }
+  // }, [isConnect]);
 
   return (
     <ConversationList scrollable={true}>
@@ -34,9 +33,8 @@ const Conversations = () => {
         return (
           <Conversation
             key={`chat-${chat.id}`}
-            onClick={(event) => {
-              openChat(event, chat);
-              handleConversationClick();
+            onClick={() => {
+              openChat(chat);
             }}
             name={chat.type === 'group' ? <div><img src={groupIco} style={{width:20, height:20}} /> {chat.name}</div> : chat.name}
             lastSenderName={lastMessage?.sender.username === user.username ? 'me' : lastMessage?.sender.username}

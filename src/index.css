@@ -11,6 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 } */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+@import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 @media (max-width: 740px) {
 	.cs-main-container--responsive>.cs-sidebar.cs-sidebar--left.left-bar {
@@ -45,6 +48,73 @@ code {
 	.cs-main-container--responsive .cs-search {
 		display: flex!important;
 	}
+}
+
+.loader-header {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 0.8em 0 0;
+}
+
+.crop-container {
+	width: 100%;
+	height: 50vh;
+	position: relative;
+}
+
+.avatar-edit button {
+	position: relative;
+	overflow: hidden;
+	width: 8rem;
+	height: 8rem;
+	border-radius: 50%;
+	border: none;
+	margin-right: auto;
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	margin-bottom: 2rem;
+	margin-top: 2rem;
+	background: #849caf;
+}
+
+.avatar-edit button i {
+	transition: transform 0.1s;
+	z-index: 2;
+	color: #fff;
+}
+
+.avatar-edit button:hover i {
+	transform: scale(1.5);
+}
+
+.avatar-edit button img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.avatar-edit button.filled::after {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.4);
+}
+
+.fa-plus-icon {
+	font-size: 0.8rem;
+	position: relative;
+	top: -1.3rem;
 }
 
 .user-button.cs-button {

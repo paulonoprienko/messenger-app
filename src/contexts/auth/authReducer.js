@@ -12,18 +12,20 @@ const logInUser = ({data, setUser}, state) => {
 		user: {
 			id: data.id,
 			username: data.username,
+			profileAvatar: data.profileAvatar,
 			token: data.token,
 		},
 		isAuthenticated: true,
 	};
 }
 
-const setUser = ({id, username, token}, state) => {
+const setUser = ({id, username, profileAvatar, token}, state) => {
 	return {
 		...state,
 		user: {
 			id,
 			username,
+			profileAvatar,
 			token,
 		},
 		isAuthenticated: true,

@@ -1,7 +1,7 @@
 import React, {createContext, useCallback, useEffect, useMemo, useReducer, useState} from "react";
 import MessengerReducer from "./messengerReducer";
 import { useSocketContext } from "../socket/socketContext";
-import { useAuthContext } from "../auth/authContext"; 
+import { useAuthContext } from "../auth/authContext";
 
 const MessengerContext = createContext();
 
@@ -12,6 +12,8 @@ export function MessengerProvider({children}) {
 			users: [],
 			groups: [],
 		},
+		createdChat: null,
+		isConnect: false,
 	};
 
 	const [state, dispatch] = useReducer(MessengerReducer, initialState);
@@ -57,10 +59,11 @@ export function MessengerProvider({children}) {
 		dispatch({
 			type: lastJsonMessage.type,
 			payload: {
-					data: lastJsonMessage.data,
+				data: lastJsonMessage.data,
 			},
 			currentUser: user,
 		});
+
 	}, [lastJsonMessage]);
 
 	const joinGroup = (chatId) => {
@@ -163,6 +166,8 @@ export function MessengerProvider({children}) {
 		joinGroup,
 		createNewGroup,
 		editUser,
+		createdChat: state.createdChat,
+		isConnect: state.isConnect,
 
 		sidebarVisible,
 		sidebarClassName,
@@ -176,6 +181,8 @@ export function MessengerProvider({children}) {
 		state.searchResults,
 		selectedUser,
 		selectedChat,
+		state.createdChat,
+		state.isConnect,
 
 		sidebarVisible,
 		sidebarClassName,
