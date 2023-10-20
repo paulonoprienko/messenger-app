@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faCamera, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Button } from '@chatscope/chat-ui-kit-react';
 
-const ImageUpload = ({ setImage }) => {
+const ImageUpload = ({ image, setImage }) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [imageCropped, setImageCropped] = useState(null);
@@ -44,11 +44,9 @@ const ImageUpload = ({ setImage }) => {
     setZoom(zoom);
   }
 
-  const [croppedImageUrl, setCroppedImageUrl] = useState(null);
   const onCrop = async () => {
     const croppedImageUrl = await getCroppedImg(imageCropped, croppedAreaPixels);
     closeModal();
-    setCroppedImageUrl(croppedImageUrl);
     setImage(croppedImageUrl);
   };
 
@@ -68,12 +66,12 @@ const ImageUpload = ({ setImage }) => {
     <>
 
       <div className="avatar-edit">
-        <button className={croppedImageUrl && "filled"} onClick={handlerClickAvatarEditBtn}>
+        <button className={image && "filled"} onClick={handlerClickAvatarEditBtn}>
           <i>
             <FontAwesomeIcon icon={faCamera} />
             <FontAwesomeIcon className="fa-plus-icon" icon={faPlus} />
           </i>
-          {croppedImageUrl && <img src={croppedImageUrl} />}
+          {image && <img src={image} />}
         </button>
       </div>
 

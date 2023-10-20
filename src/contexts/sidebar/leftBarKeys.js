@@ -1,6 +1,8 @@
 export const MAIN_KEY = 'main';
 export const NEW_GROUP_KEY = 'newGroup';
-export const USER_EDIT_KEY = 'userEdit';
+export const PROFILE_KEY = 'profile';
+export const PROFILE_INFO_KEY = 'profileInfo';
+export const PROFILE_EDIT_KEY = 'userEdit';
 export const CONVERSATIONS_KEY = 'conversations';
 export const SEARCH_RESULTS_KEY = 'searchResults';
 export const STEP_1 = 'step1';

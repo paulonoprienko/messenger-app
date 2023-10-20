@@ -2,7 +2,9 @@ import React, { createContext, useEffect, useMemo, useState } from "react";
 import {
   CONVERSATIONS_KEY,
   MAIN_KEY,
-  STEP_1
+  STEP_1,
+  PROFILE_INFO_KEY,
+  PROFILE_EDIT_KEY
 } from "./leftBarKeys";
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from "../auth/authContext";
@@ -14,6 +16,7 @@ export const SidebarProvider = ({children}) => {
   const [activeSidebarKey, setActiveSidebarKey] = useState(MAIN_KEY);
   const [activeMainKey, setActiveMainKey] = useState(CONVERSATIONS_KEY);
   const [activeNewGroupKey, setActiveNewGroupKey] = useState(STEP_1);
+  const [activeProfileSidebarKey, setActiveProfileSidebarKey] = useState(PROFILE_INFO_KEY);
   const [selectedContacts, setSelectedContacts] = useState([]);
 
   const { user } = useAuthContext();
@@ -47,9 +50,11 @@ export const SidebarProvider = ({children}) => {
 		activeSidebarKey,
     activeMainKey,
     activeNewGroupKey,
+    activeProfileSidebarKey,
     setActiveSidebarKey,
     setActiveMainKey,
     setActiveNewGroupKey,
+    setActiveProfileSidebarKey,
     selectedContacts,
     setSelectedContacts,
 
@@ -58,9 +63,11 @@ export const SidebarProvider = ({children}) => {
     activeSidebarKey,
     activeMainKey,
     activeNewGroupKey,
+    activeProfileSidebarKey,
     setActiveSidebarKey,
     setActiveMainKey,
     setActiveNewGroupKey,
+    setActiveProfileSidebarKey,
     selectedContacts,
     setSelectedContacts,
 

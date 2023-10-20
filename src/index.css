@@ -37,12 +37,79 @@
 	}
 }
 
+.my-dropdown {
+	position: relative;
+}
+.my-dropdown-menu {
+	display: none;
+	position: absolute;
+	background-color: #fff;
+	right: 0;
+	left: auto;
+	border-radius: 0.375rem;
+	border: 1px solid rgba(0, 0, 0, 0.175);
+}
+.my-dropdown-menu.my-show {
+	display: block;
+}
+.my-dropdown-items {
+	margin: 0;
+	padding: 0;
+}
+.my-dropdown-items > li {
+	list-style: none;
+	white-space: nowrap;
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.04);
+	transition: background-color 0.1s;
+}
+.my-dropdown-items > li:hover {
+	background-color: rgba(0, 0, 0, 0);
+}
+.dropdown-btn.active {
+	background-color: #e7f0f7;
+	background-image: radial-gradient(#c8deef 0%, transparent 80%);
+}
+
+.header-cmn .cs-conversation-header__actions .cs-button {
+	padding: 0.2em 0.7em;
+}
+
+.item-responsive {
+	position: relative;
+	padding-top: 100%;
+}
+
+.item-responsive > .profile-photo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.item-responsive > .profile-title {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	color: #fff;
+	min-height: 100px;
+	width: 100%;
+	padding: 0 1.5rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	pointer-events: none;
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
 .loader-header {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	align-items: center;
-	padding: 0 0.8em 0 0;
+	padding: 0.2rem 0.4rem;
+	margin: 0 0.8rem 0 0;
 }
 
 .crop-container {
@@ -104,17 +171,25 @@
 	top: -1.3rem;
 }
 
-.user-button.cs-button {
-	border-radius: 50%;
-	padding: 0.3em 0.4em;
+.header-cmn .cs-button, .header-cmn .cs-conversation-header__actions .cs-button {
+	/* border-radius: 50%; */
+	/* padding: 0.3em 0.4em; */
 	margin: 0 0.8em 0 0;
-	border: none!important;
-	transition: background-color 0.3s;
+	border: none;
+	transition: background-color 0.1s;
+}
+.header-cmn .cs-conversation-header__actions .cs-button {
+	margin: 0;
 }
 
-.user-button.cs-button:hover:not(:disabled) {
+.user-button.cs-button:hover:not(:disabled), .header-cmn .cs-conversation-header__actions .cs-button:hover:not(.dropdown-li-btn, :disabled) {
 	opacity: inherit;
 	background-color: #e7f0f7;
+	background-image: radial-gradient(#c8deef 0%, transparent 80%);
+}
+
+.header-cmn .cs-conversation-header__actions .cs-button:hover:not(:disabled) {
+	opacity: inherit;
 }
 
 .cs-main-container>.cs-sidebar.cs-sidebar--left .cs-search.header-search {

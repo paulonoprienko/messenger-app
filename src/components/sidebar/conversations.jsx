@@ -30,7 +30,7 @@ const Conversations = () => {
               openChat(chat);
             }}
             name={chat.type === 'group' ? <div><img src={groupIco} style={{width:20, height:20}} /> {chat.name}</div> : chat.name}
-            lastSenderName={lastMessage?.sender.username === user.username ? 'me' : lastMessage?.sender.username}
+            lastSenderName={lastMessage?.sender.username === user?.username ? 'me' : lastMessage?.sender.username}
             info={lastMessage?.text}
             className={chat.id === selectedChat?.id ? 'cs-conversation--active' : ''}
             // lastActivityTime="18:20"

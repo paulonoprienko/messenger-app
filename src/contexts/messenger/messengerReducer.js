@@ -23,6 +23,7 @@ const getInitialData = (data, state, currentUser) => {
 
 	return {
 		...state,
+		profile: data.profile,
 		chats,
 		isConnect: true,
 	};
@@ -91,6 +92,25 @@ const addGroupChat = (data, state) => {
 	};
 }
 
+const userEditNotify = (data, state) => {
+	const chats = [...state.chats];
+	chats.forEach(chat => {
+		chat.recipients.forEach(rec => {
+			if(rec.id === data.userId) {
+				rec.avatarImageBase64 = data.profile.avatar;
+				if(chat.type === "direct") {
+					chat.avatarImageBase64 = data.profile.avatar;
+				}
+			}
+		});
+	});
+	
+	return {
+		...state,
+		chats
+	}
+}
+
 
 const MessengerReducer = (state, action) => {
 	switch(action.type) {
@@ -128,7 +148,14 @@ const MessengerReducer = (state, action) => {
 			}
 
 		case EDITING_USER:
-			return state;
+			console.log(state.profile)
+			return {
+				...state,
+				profile: {...state.profile, avatarImageBase64: action.payload.data.profile.avatar},
+			};
+
+		case "userEditNotify":
+			return userEditNotify(action.payload.data, state);
 
 		default:
 			return state;

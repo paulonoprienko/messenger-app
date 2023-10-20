@@ -15,22 +15,25 @@ import SearchResults from './searchResults';
 
 import {
   MAIN_KEY,
-  USER_EDIT_KEY,
+  PROFILE_KEY,
+  PROFILE_INFO_KEY,
+  PROFILE_EDIT_KEY,
   NEW_GROUP_KEY,
   CONVERSATIONS_KEY,
   SEARCH_RESULTS_KEY,
 } from "../../contexts/sidebar/leftBarKeys";
 import { useSidebarContext } from '../../contexts/sidebar/sidebarContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserEdit, faUsers, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faArrowLeft, faUserCog } from "@fortawesome/free-solid-svg-icons";
 import UserEdit from './userEdit';
+import ProfileInfo from './profileInfo';
 
 const LeftSideBar = () => {
   const { search, sidebarClassName, isConnect } = useMessengerContext();
-  const { activeSidebarKey, setActiveSidebarKey, activeMainKey, setActiveMainKey } = useSidebarContext();
+  const { activeSidebarKey, setActiveSidebarKey, activeMainKey, setActiveMainKey, activeProfileSidebarKey } = useSidebarContext();
 
   const [searchInputValue, setSearchInputValue] = useState('');
-  const [ headerButtonIcon, setHeaderButtonIcon] = useState(faUserEdit);
+  const [ headerButtonIcon, setHeaderButtonIcon] = useState(faUserCog);
   const [headerButtonClickHandler, setHeaderButtonClickHandler] = useState(null);
 
   useEffect(() => {
@@ -41,14 +44,14 @@ const LeftSideBar = () => {
       search(searchInputValue);
     }
     else {
-      setHeaderButtonIcon(faUserEdit);
+      setHeaderButtonIcon(faUserCog);
       setHeaderButtonClickHandler(() => handleUserEditClick);
       setActiveMainKey(CONVERSATIONS_KEY);
     }
   }, [searchInputValue]);
 
   const handleUserEditClick = () => {
-    setActiveSidebarKey(USER_EDIT_KEY);
+    setActiveSidebarKey(PROFILE_KEY);
   }
 
   const handleBackToChatListClick = () => {
@@ -109,8 +112,19 @@ const LeftSideBar = () => {
           <Tab.Pane eventKey={NEW_GROUP_KEY}>
             {(activeSidebarKey === NEW_GROUP_KEY) && <NewGroupPane />}
           </Tab.Pane>
-          <Tab.Pane eventKey={USER_EDIT_KEY}>
-            <UserEdit />
+          <Tab.Pane eventKey={PROFILE_KEY}>
+            <Tab.Container activeKey={activeProfileSidebarKey}>
+              <Tab.Content>
+                <Tab.Pane eventKey={PROFILE_INFO_KEY}>
+                  <ProfileInfo />
+                </Tab.Pane>
+              </Tab.Content>
+              <Tab.Content>
+                <Tab.Pane eventKey={PROFILE_EDIT_KEY}>
+                  <UserEdit />
+                </Tab.Pane>
+              </Tab.Content>
+            </Tab.Container>
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>

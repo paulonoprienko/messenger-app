@@ -12,7 +12,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
 
-  const [user, setUser] = useLocalStorage('user');
+  const [user, setUser] = useLocalStorage('user', null);
   const initialState = {
     user: user,
     isAuthenticated: false,
@@ -81,9 +81,17 @@ export const AuthProvider = ({children}) => {
     }
   }
 
+  const logOut = () => {
+    dispatch({
+      type: LOGOUT
+    });
+    setUser(null);
+  }
+
   const v = {
     logInUser,
     register,
+    logOut,
     user: state.user,
     isAuthenticated: state.isAuthenticated,
   };

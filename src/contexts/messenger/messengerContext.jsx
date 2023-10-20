@@ -7,6 +7,7 @@ const MessengerContext = createContext();
 
 export function MessengerProvider({children}) {
 	const initialState = {
+		profile: {},
 		chats: [],
 		searchResults: {
 			users: [],
@@ -154,6 +155,7 @@ export function MessengerProvider({children}) {
 	}
 
 	const v = useMemo(() => ({
+		profile: state.profile,
 		chats: state.chats,
 		selectedChat,
 		selectChat,
@@ -177,6 +179,7 @@ export function MessengerProvider({children}) {
 		handleBackClick,
 		handleConversationClick,
 	}), [
+		state.profile,
 		state.chats,
 		state.searchResults,
 		selectedUser,

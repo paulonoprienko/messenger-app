@@ -61,12 +61,11 @@ export const ChatLayout = ({isGroupParticipant, headerName, headerAvatar}) => {
 							message: message.text,
 							sentTime: "15 mins ago",
 							sender: message.sender.username,
-							direction: message.sender.username === user.username ? "outgoing" : "incoming",
+							direction: message.sender.username === user?.username ? "outgoing" : "incoming",
 							position: "single",
 						}}>
-							{/* {!(message.sender.username === user.username) && <Avatar src={emilyIco} name={"Emily"} />} */}
 							{
-								!(message.sender.username === user.username) &&
+								!(message.sender.username === user?.username) &&
 								<Avatar
 									as="Avatar"
 									maxInitials={2}
