@@ -225,6 +225,60 @@
 	height: auto;
 }
 
+.message-title {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 0.875rem;
+	font-weight: 500;
+	line-height: 1.25rem;
+	unicode-bidi: plaintext;
+	display: flex;
+	color: rgb(0, 110, 145);
+	margin-top: -0.25rem;
+	margin-bottom: -0.25rem;
+	user-select: none;
+}
+
+.cs-message-list__scroll-wrapper .cs-message:last-child {
+	margin-bottom: 2.6rem;
+}
+
+.cs-message-list__scroll-wrapper .cs-message {
+	max-width: 85%;
+}
+
+.message-text {
+	/* font-size: 1.05rem; */
+}
+
+.message-text::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.message-meta {
+	position: relative;
+	top: 0.375rem;
+	float: right;
+	line-height: 22px;
+	height: 22px;
+	margin-left: 0.5rem;
+	margin-right: -0.5rem;
+	display: flex;
+	align-items: center;
+	user-select: none;
+}
+
+.message-time {
+	font-size: 0.725rem;
+	white-space: nowrap;
+}
+
+.cs-message--incoming .message-time {color: rgb(94 137 145);}
+.cs-message--outgoing .message-time {color: rgb(181 223 231);}
+
 .bm-btn {
 	position: absolute;
 	bottom: 1rem;

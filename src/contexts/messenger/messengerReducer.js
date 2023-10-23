@@ -10,14 +10,55 @@ import {
 
 } from "../eventsTypes";
 
+const mapMessagesCreationTime = (chat) => {
+	return {
+		...chat,
+		messages: chat.messages.map(message => {
+			return {
+				...message,
+				createdAt: new Date(message.createdAt)
+			}
+		}),
+	};
+}
+
+const structureMessagesByDateSubarrays = (chat) => {
+	let messagesByDates = [];
+	let dateY = undefined;
+	let dateM = undefined;
+	let dateD = undefined;
+	let el = null;
+	chat.messages.forEach(message => {
+		let date = message.createdAt;
+		if(dateD !== date.getDate() || dateM !== date.getMonth() || dateY !== date.getFullYear()) {
+			if(el) {
+				messagesByDates.push(el);
+			}
+			dateD = date.getDate();
+			dateM = date.getMonth();
+			dateY = date.getFullYear();
+			el = { date: new Date(`${dateY}-${dateM+1}-${dateD}`), messages: [] };
+		}
+		el.messages.push(message);
+
+	});
+	if(el) {
+		messagesByDates.push(el);
+	}
+
+	return messagesByDates;
+}
+
 const getInitialData = (data, state, currentUser) => {
 	const chats = data.chats.map(chat => {
 		if(chat.type === "direct") {
-			const { username, avatarImageBase64 } = chat.recipients.find(recipient => recipient.id !== currentUser.id);
-			return { ...chat, name: username, avatarImageBase64 };
+			const mappedChat = mapMessagesCreationTime(chat);
+			const { username, avatarImageBase64 } = mappedChat.recipients.find(recipient => recipient.id !== currentUser.id);
+			return { ...mappedChat, name: username, avatarImageBase64, messagesByDates: structureMessagesByDateSubarrays(mappedChat) };
 		}
 		else {
-			return chat;
+			const mappedChat = mapMessagesCreationTime(chat);
+			return { ...mappedChat, messagesByDates: structureMessagesByDateSubarrays(mappedChat) };
 		}
 	});
 
@@ -30,10 +71,36 @@ const getInitialData = (data, state, currentUser) => {
 }
 
 const addMessage = (data, state) => {
-	console.log(data)
+	const createdAt = new Date(data.message.createdAt);
 	const chats = state.chats.map(chat => {
 		if(chat.id === data.chatId) {
-			chat.messages = [...chat.messages, data.message];
+			chat.messages = [
+				...chat.messages,
+				{ ...data.message, createdAt }
+			];
+			
+			const dateD = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getDate();
+			const dateM = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getMonth();
+			const dateY = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getFullYear();
+
+			if(dateD === createdAt.getDate() && dateM === createdAt.getMonth() && dateY === createdAt.getFullYear()) {
+				chat.messagesByDates[chat.messagesByDates.length-1].messages = [
+					...chat.messagesByDates[chat.messagesByDates.length-1].messages,
+					{ ...data.message, createdAt }
+				];
+			} else {
+				chat.messagesByDates = [
+					...chat.messagesByDates,
+					{
+						date: new Date(`${createdAt.getFullYear()}-${createdAt.getMonth()+1}-${createdAt.getDate()}`),
+						messages: [{ ...data.message, createdAt }]
+					}
+				];
+			}
+
+			chat.messagesByDates = [
+				...chat.messagesByDates
+			];
 		}
 		return {
 			...chat,
@@ -58,9 +125,17 @@ const updSearchResults = (data, state) => {
 
 const addChat = (data, state, currentUser) => {
 	console.log(data);
-	const {username} = data.chat.recipients.find(recipient => recipient.id !== currentUser.id);
-	data.chat = {...data.chat, name: username};
-	const chats = [...state.chats, data.chat];
+	const mappedChat = mapMessagesCreationTime(data.chat);
+	const { username, avatarImageBase64 } = mappedChat.recipients.find(recipient => recipient.id !== currentUser.id);
+	const chats = [
+		...state.chats,
+		{
+			...mappedChat,
+			name: username,
+			avatarImageBase64,
+			messagesByDates: structureMessagesByDateSubarrays(mappedChat)
+		}
+	];
 	return {
 		...state,
 		chats,
@@ -69,20 +144,28 @@ const addChat = (data, state, currentUser) => {
 
 const addGroupChat = (data, state) => {
 	let chats;
+	const mappedChat = mapMessagesCreationTime(data.chat);
 	if(state.chats.some(chat => chat.id === data.chat.id)) {
 		chats = [
 			...state.chats.map(chat => {
 				if(chat.id === data.chat.id) {
-					return data.chat;
+					return {
+						...mappedChat,
+						messagesByDates: structureMessagesByDateSubarrays(mappedChat)
+					};
 				}
 				else return chat;
 			})
 		];
 	}
 	else {
+		
 		chats = [
 			...state.chats,
-			data.chat
+			{
+				...mappedChat,
+				messagesByDates: structureMessagesByDateSubarrays(mappedChat)
+			}
 		];
 	}
 	

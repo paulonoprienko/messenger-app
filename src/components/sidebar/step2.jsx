@@ -33,7 +33,7 @@ const Step2 = () => {
 					<span>New group</span>
 				</ConversationHeader.Content>
 			</ConversationHeader>
-			<ImageUpload setImage={setAvatarImageBase64} />
+			<ImageUpload image={avatarImageBase64} setImage={setAvatarImageBase64} />
 			<Form.Control
 				type="text"
 				placeholder="Group name"

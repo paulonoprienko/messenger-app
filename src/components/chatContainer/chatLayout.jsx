@@ -32,7 +32,6 @@ export const ChatLayout = ({isGroupParticipant, headerName, headerAvatar}) => {
           selectChat(null);
         }}
 				/>
-					{/* <Avatar src={emilyIco} name={headerName} /> */}
 					<Avatar
 						as="Avatar"
 						maxInitials={2}
@@ -53,37 +52,109 @@ export const ChatLayout = ({isGroupParticipant, headerName, headerAvatar}) => {
 					}
 				</ConversationHeader.Actions>}
 			</ConversationHeader>
-			{/* <MessageList typingIndicator={<TypingIndicator content="Emily is typing" />}> */}
+			{/* <MessageList className="chat-message-list" typingIndicator={<TypingIndicator content="Emily is typing" />}> */}
 			<MessageList className="chat-message-list">
-				{selectedChat?.messages?.map(message => {
+				<MessageList.Content>
+				{selectedChat?.messagesByDates?.map(sc => {
 					return (
-						<Message key={message.id} model={{
-							message: message.text,
-							sentTime: "15 mins ago",
-							sender: message.sender.username,
-							direction: message.sender.username === user?.username ? "outgoing" : "incoming",
-							position: "single",
-						}}>
-							{
-								!(message.sender.username === user?.username) &&
-								<Avatar
-									as="Avatar"
-									maxInitials={2}
-									size="100%"
-									round={true}
-									name={message.sender.username}
-									// src={message.sender.avatarImageBase64}
-									src={selectedChat?.recipients.find(rec => rec.username === message.sender.username).avatarImageBase64}
-									className="chat-list-avatar"
-								/>
-							}
-							<Message.Footer
-								sender={(selectedChat.type === 'group') ? message.sender.username : null}
-								sentTime="just now"
+						<div key={sc.date}>
+							<MessageSeparator
+								content={`${sc.date.getFullYear()}-${sc.date.getMonth()+1}-${sc.date.getDate()}`}
 							/>
-						</Message>
+							{sc.messages?.map(message => {
+								let sentTimeHours = message.createdAt.getHours();
+								let sentTimeMinutes = message.createdAt.getMinutes();
+								sentTimeHours = sentTimeHours < 10 ? '0' + sentTimeHours : sentTimeHours;
+								sentTimeMinutes = sentTimeMinutes < 10 ? '0' + sentTimeMinutes : sentTimeMinutes;
+								return (
+										<Message key={message.id} model={{
+											sentTime: `${sentTimeHours}:${sentTimeMinutes}`,
+											sender: message.sender.username,
+											direction: message.sender.username === user?.username ? "outgoing" : "incoming",
+											position: "single",
+										}}>
+											{
+												!(message.sender.username === user?.username) &&
+												<Avatar
+													as="Avatar"
+													maxInitials={2}
+													size="100%"
+													round={true}
+													name={message.sender.username}
+													src={selectedChat?.recipients.find(rec => rec.username === message.sender.username).avatarImageBase64}
+													className="chat-list-avatar"
+												/>
+											}
+											<Message.CustomContent>
+												{
+													(selectedChat.type === 'group' && !(message.sender.username === user?.username))
+														? <div className="message-title">
+															<span>{message.sender.username}</span>
+														</div>
+														: null
+												}
+												<div className="message-text">
+													{message.text}
+													<span className="message-meta">
+														<span className="message-time">
+															{`${sentTimeHours}:${sentTimeMinutes}`}
+														</span>
+													</span>
+												</div>
+											</Message.CustomContent>
+										</Message>
+								);
+							})}
+						
+						</div>
+						
 					);
 				})}
+				</MessageList.Content>
+				{/* {selectedChat?.messages?.map(message => {
+					let sentTimeHours = message.createdAt.getHours();
+					let sentTimeMinutes = message.createdAt.getMinutes();
+					sentTimeHours = sentTimeHours < 10 ? '0' + sentTimeHours : sentTimeHours;
+					sentTimeMinutes = sentTimeMinutes < 10 ? '0' + sentTimeMinutes : sentTimeMinutes;
+					return (
+							<Message key={message.id} model={{
+								sentTime: `${sentTimeHours}:${sentTimeMinutes}`,
+								sender: message.sender.username,
+								direction: message.sender.username === user?.username ? "outgoing" : "incoming",
+								position: "single",
+							}}>
+								{
+									!(message.sender.username === user?.username) &&
+									<Avatar
+										as="Avatar"
+										maxInitials={2}
+										size="100%"
+										round={true}
+										name={message.sender.username}
+										src={selectedChat?.recipients.find(rec => rec.username === message.sender.username).avatarImageBase64}
+										className="chat-list-avatar"
+									/>
+								}
+								<Message.CustomContent>
+									{
+										(selectedChat.type === 'group' && !(message.sender.username === user?.username))
+											? <div className="message-title">
+												<span>{message.sender.username}</span>
+											</div>
+											: null
+									}
+									<div className="message-text">
+										{message.text}
+										<span className="message-meta">
+											<span className="message-time">
+												{`${sentTimeHours}:${sentTimeMinutes}`}
+											</span>
+										</span>
+									</div>
+								</Message.CustomContent>
+							</Message>
+					);
+				})} */}
 			</MessageList>
 			{
 				(selectedUser || (selectedChat?.type === "group" && isGroupParticipant)) && 
