@@ -72,24 +72,26 @@ const getInitialData = (data, state, currentUser) => {
 
 const addMessage = (data, state) => {
 	const createdAt = new Date(data.message.createdAt);
-	const chats = state.chats.map(chat => {
+	let index;
+	const chats = state.chats.map((chat, i) => {
 		if(chat.id === data.chatId) {
-			chat.messages = [
-				...chat.messages,
-				{ ...data.message, createdAt }
-			];
-			
+			index = i;
 			const dateD = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getDate();
 			const dateM = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getMonth();
 			const dateY = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getFullYear();
 
+			let messagesByDates;
 			if(dateD === createdAt.getDate() && dateM === createdAt.getMonth() && dateY === createdAt.getFullYear()) {
-				chat.messagesByDates[chat.messagesByDates.length-1].messages = [
-					...chat.messagesByDates[chat.messagesByDates.length-1].messages,
-					{ ...data.message, createdAt }
-				];
+				messagesByDates = [...chat.messagesByDates.slice(0, chat.messagesByDates.length-1)];
+				messagesByDates[chat.messagesByDates.length-1] = {
+					date: chat.messagesByDates[chat.messagesByDates.length-1].date,
+					messages: [
+						...chat.messagesByDates[chat.messagesByDates.length-1].messages,
+						{ ...data.message, createdAt }
+					],
+				};
 			} else {
-				chat.messagesByDates = [
+				messagesByDates = [
 					...chat.messagesByDates,
 					{
 						date: new Date(`${createdAt.getFullYear()}-${createdAt.getMonth()+1}-${createdAt.getDate()}`),
@@ -97,18 +99,22 @@ const addMessage = (data, state) => {
 					}
 				];
 			}
-
-			chat.messagesByDates = [
-				...chat.messagesByDates
-			];
-		}
-		return {
-			...chat,
-		}
+			return {
+				...chat,
+				messages: [
+					...chat.messages,
+					{ ...data.message, createdAt }
+				],
+				messagesByDates,
+			};
+		} else
+		return chat;
 	});
+	const poppedUpChats = chats.splice(index, 1);
+	chats.unshift(...poppedUpChats);
 	return {
 		...state,
-		chats
+		chats,
 	};
 }
 
@@ -128,13 +134,13 @@ const addChat = (data, state, currentUser) => {
 	const mappedChat = mapMessagesCreationTime(data.chat);
 	const { username, avatarImageBase64 } = mappedChat.recipients.find(recipient => recipient.id !== currentUser.id);
 	const chats = [
-		...state.chats,
 		{
 			...mappedChat,
 			name: username,
 			avatarImageBase64,
 			messagesByDates: structureMessagesByDateSubarrays(mappedChat)
-		}
+		},
+		...state.chats,
 	];
 	return {
 		...state,
@@ -161,11 +167,11 @@ const addGroupChat = (data, state) => {
 	else {
 		
 		chats = [
-			...state.chats,
 			{
 				...mappedChat,
 				messagesByDates: structureMessagesByDateSubarrays(mappedChat)
-			}
+			},
+			...state.chats,
 		];
 	}
 	

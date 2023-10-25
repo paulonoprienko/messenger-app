@@ -23,6 +23,10 @@ const Conversations = () => {
     <ConversationList scrollable={true}>
       {chats?.map(chat => {
         const lastMessage = !!chat.messages.length ? chat.messages[chat.messages.length - 1] : undefined;
+        let sentTimeHours = lastMessage?.createdAt.getHours();
+        let sentTimeMinutes = lastMessage?.createdAt.getMinutes();
+        sentTimeHours = sentTimeHours < 10 ? '0' + sentTimeHours : sentTimeHours;
+        sentTimeMinutes = sentTimeMinutes < 10 ? '0' + sentTimeMinutes : sentTimeMinutes;
         return (
           <Conversation
             key={`chat-${chat.id}`}
@@ -33,7 +37,7 @@ const Conversations = () => {
             lastSenderName={lastMessage?.sender.username === user?.username ? 'me' : lastMessage?.sender.username}
             info={lastMessage?.text}
             className={chat.id === selectedChat?.id ? 'cs-conversation--active' : ''}
-            // lastActivityTime="18:20"
+            lastActivityTime={lastMessage ? `${sentTimeHours}:${sentTimeMinutes}` : null}
           >
             <SidebarAvatar as="Avatar" name={chat.name} src={chat.avatarImageBase64} />
           </Conversation>
