@@ -20,7 +20,7 @@ const Conversations = () => {
   const { openChat } = useSidebarContext();
 
   return (
-    <ConversationList scrollable={true}>
+    <ConversationList className='chat-list' scrollable={true}>
       {chats?.map(chat => {
         const lastMessage = !!chat.messages.length ? chat.messages[chat.messages.length - 1] : undefined;
         let sentTimeHours = lastMessage?.createdAt.getHours();
@@ -38,6 +38,7 @@ const Conversations = () => {
             info={lastMessage?.text}
             className={chat.id === selectedChat?.id ? 'cs-conversation--active' : ''}
             lastActivityTime={lastMessage ? `${sentTimeHours}:${sentTimeMinutes}` : null}
+            unreadCnt={chat?.unreadMessagesCount}
           >
             <SidebarAvatar as="Avatar" name={chat.name} src={chat.avatarImageBase64} />
           </Conversation>

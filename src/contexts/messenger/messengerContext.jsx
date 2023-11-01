@@ -154,6 +154,25 @@ export function MessengerProvider({children}) {
 		});
 	}
 
+	const onreadNotify = (messageId) => {
+		sendSocketMessage({
+			messageId,
+			type: 'onreadNotify',
+		});
+	}
+
+	const decrementUnread = (chatId, messageId) => {
+		dispatch({
+			type: "decrementUnread",
+			payload: {
+				data: {
+					chatId,
+					messageId
+				}
+			}
+		});
+	}
+
 	const v = useMemo(() => ({
 		profile: state.profile,
 		chats: state.chats,
@@ -170,6 +189,8 @@ export function MessengerProvider({children}) {
 		editUser,
 		createdChat: state.createdChat,
 		isConnect: state.isConnect,
+		decrementUnread,
+		onreadNotify,
 
 		sidebarVisible,
 		sidebarClassName,

@@ -51,14 +51,19 @@ const structureMessagesByDateSubarrays = (chat) => {
 
 const getInitialData = (data, state, currentUser) => {
 	const chats = data.chats.map(chat => {
+		const unreadMessagesCount = chat.messages.reduceRight((count, message) => {
+			if(message.isRead || message.sender.id === currentUser.id) return count;
+			return count + 1;
+		}, 0);
+
 		if(chat.type === "direct") {
 			const mappedChat = mapMessagesCreationTime(chat);
 			const { username, avatarImageBase64 } = mappedChat.recipients.find(recipient => recipient.id !== currentUser.id);
-			return { ...mappedChat, name: username, avatarImageBase64, messagesByDates: structureMessagesByDateSubarrays(mappedChat) };
+			return { ...mappedChat, name: username, avatarImageBase64, messagesByDates: structureMessagesByDateSubarrays(mappedChat), unreadMessagesCount };
 		}
 		else {
 			const mappedChat = mapMessagesCreationTime(chat);
-			return { ...mappedChat, messagesByDates: structureMessagesByDateSubarrays(mappedChat) };
+			return { ...mappedChat, messagesByDates: structureMessagesByDateSubarrays(mappedChat), unreadMessagesCount };
 		}
 	});
 
@@ -70,11 +75,12 @@ const getInitialData = (data, state, currentUser) => {
 	};
 }
 
-const addMessage = (data, state) => {
+const addMessage = (data, state, currentUser) => {
 	const createdAt = new Date(data.message.createdAt);
 	let index;
 	const chats = state.chats.map((chat, i) => {
 		if(chat.id === data.chatId) {
+			const unreadMessagesCount = (data.message.sender.id !== currentUser.id) ? chat?.unreadMessagesCount + 1 : chat?.unreadMessagesCount;
 			index = i;
 			const dateD = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getDate();
 			const dateM = chat.messagesByDates[chat.messagesByDates.length-1]?.date.getMonth();
@@ -106,6 +112,7 @@ const addMessage = (data, state) => {
 					{ ...data.message, createdAt }
 				],
 				messagesByDates,
+				unreadMessagesCount
 			};
 		} else
 		return chat;
@@ -138,7 +145,8 @@ const addChat = (data, state, currentUser) => {
 			...mappedChat,
 			name: username,
 			avatarImageBase64,
-			messagesByDates: structureMessagesByDateSubarrays(mappedChat)
+			messagesByDates: structureMessagesByDateSubarrays(mappedChat),
+			unreadMessagesCount: (data.message.sender.id === currentUser.id) ? 1 : 0
 		},
 		...state.chats,
 	];
@@ -148,16 +156,22 @@ const addChat = (data, state, currentUser) => {
 	};
 }
 
-const addGroupChat = (data, state) => {
+const addGroupChat = (data, state, currentUser) => {
 	let chats;
 	const mappedChat = mapMessagesCreationTime(data.chat);
 	if(state.chats.some(chat => chat.id === data.chat.id)) {
 		chats = [
 			...state.chats.map(chat => {
+				const unreadMessagesCount = chat.messages.reduceRight((count, message) => {
+					console.log(currentUser)
+					if(message.isRead || message.sender.id === currentUser.id) return count;
+					return count + 1;
+				}, 0);
 				if(chat.id === data.chat.id) {
 					return {
 						...mappedChat,
-						messagesByDates: structureMessagesByDateSubarrays(mappedChat)
+						messagesByDates: structureMessagesByDateSubarrays(mappedChat),
+						unreadMessagesCount
 					};
 				}
 				else return chat;
@@ -169,7 +183,8 @@ const addGroupChat = (data, state) => {
 		chats = [
 			{
 				...mappedChat,
-				messagesByDates: structureMessagesByDateSubarrays(mappedChat)
+				messagesByDates: structureMessagesByDateSubarrays(mappedChat),
+				unreadMessagesCount: 0
 			},
 			...state.chats,
 		];
@@ -200,6 +215,35 @@ const userEditNotify = (data, state) => {
 	}
 }
 
+const decrementUnreadCount = (data, state) => {
+	const chats = state.chats.map(chat => {
+		if(chat.id === data.chatId) {
+			const messages = chat.messages.map(message => {
+				if(message.id === data.messageId) {
+					return {
+						...message,
+						isRead: true,
+					}
+				} else {
+					return message;
+				}
+			});
+
+			return {
+				...chat,
+				unreadMessagesCount: chat.unreadMessagesCount ? chat.unreadMessagesCount - 1 : 0,
+				messages,
+				messagesByDates: structureMessagesByDateSubarrays({...chat, messages})
+			};
+		} else {
+			return chat;
+		}
+	});
+	return {
+		...state,
+		chats
+	};
+}
 
 const MessengerReducer = (state, action) => {
 	switch(action.type) {
@@ -207,7 +251,7 @@ const MessengerReducer = (state, action) => {
 			return getInitialData(action.payload.data, state, action.currentUser);
 
 		case SENDING_MESSAGE:
-			return addMessage(action.payload.data, state);
+			return addMessage(action.payload.data, state, action.currentUser);
 
 		case SEARCH:
 			return updSearchResults(action.payload.data, state);
@@ -225,10 +269,10 @@ const MessengerReducer = (state, action) => {
 			return addChat(action.payload.data, state, action.currentUser);
 
 		case JOINING_GROUP:
-			return addGroupChat(action.payload.data, state);
+			return addGroupChat(action.payload.data, state, action.currentUser);
 
 		case CREATING_GROUP:
-			return addGroupChat(action.payload.data, state);
+			return addGroupChat(action.payload.data, state, action.currentUser);
 
 		case "afterCreatingGroup":
 			return {
@@ -245,6 +289,9 @@ const MessengerReducer = (state, action) => {
 
 		case "userEditNotify":
 			return userEditNotify(action.payload.data, state);
+		
+		case "decrementUnread":
+			return decrementUnreadCount(action.payload.data, state);
 
 		default:
 			return state;

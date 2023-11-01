@@ -32,9 +32,22 @@
 		display: flex;
 	}
 
-	.cs-main-container--responsive .cs-search {
+	.cs-main-container--responsive .cs-search, .cs-conversation__last-activity-time {
 		display: flex!important;
 	}
+}
+
+.chat-list .cs-conversation__last-activity-time {
+	align-items: baseline;
+}
+
+.chat-list .cs-conversation__unread {
+	top: auto;
+	bottom: .8em;
+	right: .95em;
+	font-size: .85em;
+	background-color: #1262ec;
+	border-radius: 0.4em;
 }
 
 .my-dropdown {
@@ -248,10 +261,6 @@
 	max-width: 85%;
 }
 
-.message-text {
-	/* font-size: 1.05rem; */
-}
-
 .message-text::after {
 	content: "";
 	clear: both;
@@ -283,6 +292,10 @@
 	position: absolute;
 	bottom: 1rem;
 	right: 1rem;
+}
+
+.bm-btn .cs-button {
+	background: #fff;
 }
 
 .icon-close {
