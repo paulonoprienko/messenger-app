@@ -126,7 +126,6 @@ const addMessage = (data, state, currentUser) => {
 }
 
 const updSearchResults = (data, state) => {
-	// console.log(data)
 	return {
 		...state,
 		searchResults: {
@@ -137,7 +136,6 @@ const updSearchResults = (data, state) => {
 }
 
 const addChat = (data, state, currentUser) => {
-	console.log(data);
 	const mappedChat = mapMessagesCreationTime(data.chat);
 	const { username, avatarImageBase64 } = mappedChat.recipients.find(recipient => recipient.id !== currentUser.id);
 	const chats = [
@@ -163,7 +161,6 @@ const addGroupChat = (data, state, currentUser) => {
 		chats = [
 			...state.chats.map(chat => {
 				const unreadMessagesCount = chat.messages.reduceRight((count, message) => {
-					console.log(currentUser)
 					if(message.isRead || message.sender.id === currentUser.id) return count;
 					return count + 1;
 				}, 0);
@@ -281,7 +278,6 @@ const MessengerReducer = (state, action) => {
 			}
 
 		case EDITING_USER:
-			console.log(state.profile)
 			return {
 				...state,
 				profile: {...state.profile, avatarImageBase64: action.payload.data.profile.avatar},

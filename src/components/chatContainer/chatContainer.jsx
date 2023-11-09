@@ -5,21 +5,15 @@ import DirectChat from "./directChat";
 import GroupChat from "./groupChat";
 
 const ChatContainer = () => {
-	const {selectChat, selectedChat} = useMessengerContext();
-	
-	const params = useParams();
-	
-	useEffect(() => {
-		selectChat(params.chatId)
-	}, [params, selectChat]);
+  const { selectChat, selectedChat } = useMessengerContext();
 
-	return (
-		<>
-			{selectedChat?.type !== 'group'
-      ? <DirectChat />
-      : <GroupChat />}
-		</>
-	);
-}
+  const params = useParams();
+
+  useEffect(() => {
+    selectChat(params.chatId);
+  }, [params, selectChat]);
+
+  return <>{selectedChat?.type !== "group" ? <DirectChat /> : <GroupChat />}</>;
+};
 
 export default ChatContainer;

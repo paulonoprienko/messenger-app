@@ -1,34 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Button, ConversationHeader } from '@chatscope/chat-ui-kit-react';
+import React, { useState, useEffect, useRef } from "react";
+import { Button, ConversationHeader } from "@chatscope/chat-ui-kit-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faPen, faSignOutAlt, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-
 import {
-	MAIN_KEY,
-  PROFILE_EDIT_KEY
-} from "../../contexts/sidebar/leftBarKeys";
-import { useSidebarContext } from '../../contexts/sidebar/sidebarContext';
-import { useMessengerContext } from '../../contexts/messenger/messengerContext';
-import Avatar from 'react-avatar';
-import { useAuthContext } from '../../contexts/auth/authContext';
+  faArrowLeft,
+  faPen,
+  faSignOutAlt,
+  faEllipsisV,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { MAIN_KEY, PROFILE_EDIT_KEY } from "../../contexts/sidebar/leftBarKeys";
+import { useSidebarContext } from "../../contexts/sidebar/sidebarContext";
+import { useMessengerContext } from "../../contexts/messenger/messengerContext";
+import Avatar from "react-avatar";
+import { useAuthContext } from "../../contexts/auth/authContext";
 
 const ProfileInfo = () => {
-  const { setActiveSidebarKey, setActiveProfileSidebarKey } = useSidebarContext();
+  const { setActiveSidebarKey, setActiveProfileSidebarKey } =
+    useSidebarContext();
   const { profile } = useMessengerContext();
   return (
     <>
       <ConversationHeader className=" header-cmn">
-				<ConversationHeader.Content>
-					<Button
-						className="user-button"
-						border
-						icon={<FontAwesomeIcon icon={faArrowLeft} />}
-						onClick={() => {
-							setActiveSidebarKey(MAIN_KEY);
-						}}
-					/>
-					<div style={{flexGrow: 1}}>Profile</div>
+        <ConversationHeader.Content>
+          <Button
+            className="user-button"
+            border
+            icon={<FontAwesomeIcon icon={faArrowLeft} />}
+            onClick={() => {
+              setActiveSidebarKey(MAIN_KEY);
+            }}
+          />
+          {/* <div style={{flexGrow: 1}}>Profile</div> */}
+          <div style={{ flexGrow: 1 }}>Профиль</div>
           <ConversationHeader.Actions>
             <Button
               icon={<FontAwesomeIcon icon={faPen} />}
@@ -38,17 +42,18 @@ const ProfileInfo = () => {
             />
             <LogoutDropdown />
           </ConversationHeader.Actions>
-				</ConversationHeader.Content>
-			</ConversationHeader>
+        </ConversationHeader.Content>
+      </ConversationHeader>
       <ProfilePhoto name={profile.username} src={profile.avatarImageBase64} />
     </>
-  )
-}
+  );
+};
 
-const ProfilePhoto = ({name, src}) => {
+const ProfilePhoto = ({ name, src }) => {
   return (
     <div className="item-responsive">
-      <Avatar className="profile-photo"
+      <Avatar
+        className="profile-photo"
         maxInitials={2}
         size={"100%"}
         round={false}
@@ -60,7 +65,7 @@ const ProfilePhoto = ({name, src}) => {
       </div>
     </div>
   );
-}
+};
 
 const LogoutDropdown = () => {
   const menuRef = useRef(null);
@@ -69,12 +74,15 @@ const LogoutDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => {
     setIsOpen((prev) => !prev);
-  }
+  };
   useEffect(() => {
-    if(!isOpen) return;
+    if (!isOpen) return;
     const handleClick = (e) => {
-      if(!menuRef.current) return;
-      if(!menuRef.current.contains(e.target) && !btnRef.current.contains(e.target)) {
+      if (!menuRef.current) return;
+      if (
+        !menuRef.current.contains(e.target) &&
+        !btnRef.current.contains(e.target)
+      ) {
         onClose();
       }
     };
@@ -83,13 +91,12 @@ const LogoutDropdown = () => {
 
     return () => {
       document.removeEventListener("click", handleClick);
-    }
+    };
   }, [isOpen, onClose]);
 
   return (
     <div className={isOpen ? "my-show my-dropdown" : "my-dropdown"}>
       <div ref={btnRef}>
-
         <Button
           className={isOpen ? "dropdown-btn active" : "dropdown-btn"}
           icon={<FontAwesomeIcon icon={faEllipsisV} />}
@@ -98,24 +105,28 @@ const LogoutDropdown = () => {
           }}
         />
       </div>
-      <div ref={menuRef} className={isOpen ? "my-show my-dropdown-menu" : "my-dropdown-menu"}>
+      <div
+        ref={menuRef}
+        className={isOpen ? "my-show my-dropdown-menu" : "my-dropdown-menu"}
+      >
         <ul className="my-dropdown-items">
           <li>
             <Button
               className="dropdown-li-btn"
               icon={<FontAwesomeIcon icon={faSignOutAlt} />}
-              labelPosition='left'
+              labelPosition="left"
               onClick={() => {
                 logOut();
               }}
             >
-              Log Out
+              {/* Log Out */}
+              Выйти
             </Button>
           </li>
         </ul>
       </div>
     </div>
   );
-}
+};
 
 export default ProfileInfo;
